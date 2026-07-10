@@ -156,7 +156,7 @@ export default function App() {
           <div style={{ position: "relative", display: "flex", justifyContent: "center", width: "100%", height: 20 }}>
             <motion.div
               animate={{ opacity: mode === "save" ? 0 : 1 }}
-              transition={{ duration: 0.25 }}
+              transition={{ duration: mode === "save" ? 0.25 : 0.4, delay: mode === "save" ? 0 : 0.25 }}
               style={{ position: "absolute", pointerEvents: mode === "save" ? "none" : "auto" }}
             >
               <Menu
