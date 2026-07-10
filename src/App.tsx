@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { GRADIENTS } from "./data/gradients";
 import type { GradientSpec } from "./types";
-import { isDarkAt } from "./lib/luminance";
 import { useMediaQuery } from "./lib/useMediaQuery";
 import { exportGradient, SIZE_4K, SIZE_MOBILE } from "./lib/exportImage";
 import LandingCanvas from "./components/LandingCanvas";
@@ -30,9 +29,9 @@ export default function App() {
   const activeSpec = specs[activeIndex];
   const total = specs.length;
 
-  // Logo is white over a dark gradient top; dark (primary) over light gradients
-  // and over the white gallery background.
-  const logoLight = mode === "gallery" ? false : isDarkAt(activeSpec, 0);
+  // Logo is white while viewing a single gradient; dark (primary) only over
+  // the white gallery ("All") background.
+  const logoLight = mode !== "gallery";
 
   const goPrev = useCallback(() => setActiveIndex((i) => (i - 1 + total) % total), [total]);
   const goNext = useCallback(() => setActiveIndex((i) => (i + 1) % total), [total]);
@@ -43,14 +42,39 @@ export default function App() {
     requestAnimationFrame(() => setMode("landing"));
   }, []);
 
-  // Escape closes any transient view
+  // Keyboard shortcuts: arrows navigate, a/s/i open gallery/save/info, esc closes
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMode("landing");
+      const target = e.target as HTMLElement | null;
+      if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
+
+      switch (e.key) {
+        case "Escape":
+          setMode("landing");
+          break;
+        case "ArrowLeft":
+          if (mode !== "gallery") goPrev();
+          break;
+        case "ArrowRight":
+          if (mode !== "gallery") goNext();
+          break;
+        case "a":
+        case "A":
+          setMode("gallery");
+          break;
+        case "s":
+        case "S":
+          setMode("save");
+          break;
+        case "i":
+        case "I":
+          setMode("info");
+          break;
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [mode, goPrev, goNext]);
 
   const patchActive = (patch: Partial<GradientSpec>) =>
     setSpecs((prev) => prev.map((s, i) => (i === activeIndex ? { ...s, ...patch } : s)));
