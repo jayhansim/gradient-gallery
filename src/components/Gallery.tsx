@@ -31,7 +31,6 @@ export default function Gallery({ gradients, onSelect, onClose }: GalleryProps) 
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 40,
       }}
     >
       <div
@@ -83,7 +82,11 @@ export default function Gallery({ gradients, onSelect, onClose }: GalleryProps) 
         </div>
       </div>
 
-      <button className="menu-item" onClick={onClose}>
+      <button
+        className="menu-item"
+        onClick={onClose}
+        style={{ position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)" }}
+      >
         Close
       </button>
     </motion.div>
