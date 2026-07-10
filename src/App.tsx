@@ -17,7 +17,7 @@ type Mode = "landing" | "gallery" | "save" | "info";
 
 const CANVAS_LAYOUT_ID = "canvas";
 const EASE = [0.22, 1, 0.36, 1] as const;
-const CANVAS_FADE_DURATION = 1;
+const CANVAS_FADE_DURATION = 1.5;
 
 const isDev = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("dev");
 
@@ -92,7 +92,7 @@ export default function App() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: CANVAS_FADE_DURATION, ease: EASE }}
+        transition={{ duration: CANVAS_FADE_DURATION, ease: "easeOut" }}
       >
         {mode === "gallery" ? (
           <Gallery
