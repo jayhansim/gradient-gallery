@@ -48,7 +48,7 @@ export default function InfoModal({ onClose, sheet }: InfoModalProps) {
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
           <h2 style={{ fontSize: 20, fontWeight: 500, letterSpacing: "-0.2px" }}>Site info</h2>
-          <button className="menu-item" onClick={onClose} aria-label="Close" style={{ fontSize: 20 }}>
+          <button className="menu-item menu-item--static" onClick={onClose} aria-label="Close" style={{ fontSize: 20 }}>
             ✕
           </button>
         </div>

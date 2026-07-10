@@ -7,15 +7,22 @@
   line-height: 1;
   color: var(--primary);
   white-space: nowrap;
-  transition: opacity 0.2s var(--ease-soft);
-}
-.menu-item:hover {
-  opacity: 0.55;
 }
 .menu-item:disabled {
   color: var(--tertiary);
   cursor: default;
   opacity: 1;
+}
+
+/* CSS-driven hover fade, for plain (non-motion) menu buttons only. Motion.*
+   items (SaveMenu) animate opacity via framer-motion and must not also carry
+   a CSS transition on opacity — the two engines fight over the same property
+   every frame, which caused a visible flicker on the Save menu's enter/exit. */
+.menu-item--static {
+  transition: opacity 0.2s var(--ease-soft);
+}
+.menu-item--static:hover {
+  opacity: 0.55;
 }
 
 .menu-row {

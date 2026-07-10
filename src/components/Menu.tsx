@@ -10,19 +10,19 @@ interface MenuProps {
 export default function Menu({ onPrev, onNext, onAll, onSave, onInfo }: MenuProps) {
   return (
     <div className="menu-row">
-      <button className="menu-item" onClick={onPrev}>
+      <button className="menu-item menu-item--static" onClick={onPrev}>
         Prev
       </button>
-      <button className="menu-item" onClick={onNext}>
+      <button className="menu-item menu-item--static" onClick={onNext}>
         Next
       </button>
-      <button className="menu-item" onClick={onAll}>
+      <button className="menu-item menu-item--static" onClick={onAll}>
         All
       </button>
-      <button className="menu-item" onClick={onSave}>
+      <button className="menu-item menu-item--static" onClick={onSave}>
         Save
       </button>
-      <button className="menu-item" onClick={onInfo}>
+      <button className="menu-item menu-item--static" onClick={onInfo}>
         Info
       </button>
     </div>

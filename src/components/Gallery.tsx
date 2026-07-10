@@ -83,7 +83,7 @@ export default function Gallery({ gradients, onSelect, onClose }: GalleryProps) 
       </div>
 
       <button
-        className="menu-item"
+        className="menu-item menu-item--static"
         onClick={onClose}
         style={{ position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)" }}
       >
