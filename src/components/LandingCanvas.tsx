@@ -20,6 +20,7 @@ interface LandingCanvasProps {
 export default function LandingCanvas({ spec, activeKey, layoutId, style }: LandingCanvasProps) {
   return (
     <motion.div
+      id="gradient-canvas"
       layoutId={layoutId}
       style={{ position: "absolute", overflow: "hidden", ...style }}
     >
