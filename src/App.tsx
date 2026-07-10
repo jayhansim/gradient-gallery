@@ -17,6 +17,7 @@ type Mode = "landing" | "gallery" | "save" | "info";
 
 const CANVAS_LAYOUT_ID = "canvas";
 const EASE = [0.22, 1, 0.36, 1] as const;
+const CANVAS_FADE_DURATION = 1;
 
 const isDev = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("dev");
 
@@ -84,35 +85,44 @@ export default function App() {
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", background: "var(--white)" }}>
-      {/* Canvas: big landing canvas, or the gallery it morphs into */}
-      {mode === "gallery" ? (
-        <Gallery
-          gradients={specs}
-          activeIndex={activeIndex}
-          onSelect={selectFromGallery}
-          onClose={() => setMode("landing")}
-          layoutId={CANVAS_LAYOUT_ID}
-        />
-      ) : (
-        <LandingCanvas
-          spec={activeSpec}
-          activeKey={activeSpec.id}
-          layoutId={CANVAS_LAYOUT_ID}
-          style={{
-            top: 16,
-            left: 16,
-            right: 16,
-            bottom: 120,
-            borderRadius: "var(--canvas-radius)",
-          }}
-        />
-      )}
+      {/* Canvas: big landing canvas, or the gallery it morphs into.
+          Wrapper fades in once on page load; it never remounts across mode
+          switches, so the gallery/landing morph beneath it is unaffected.
+          Logo and bottom strip are timed to start once this fade completes. */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: CANVAS_FADE_DURATION, ease: EASE }}
+      >
+        {mode === "gallery" ? (
+          <Gallery
+            gradients={specs}
+            activeIndex={activeIndex}
+            onSelect={selectFromGallery}
+            onClose={() => setMode("landing")}
+            layoutId={CANVAS_LAYOUT_ID}
+          />
+        ) : (
+          <LandingCanvas
+            spec={activeSpec}
+            activeKey={activeSpec.id}
+            layoutId={CANVAS_LAYOUT_ID}
+            style={{
+              top: 16,
+              left: 16,
+              right: 16,
+              bottom: 120,
+              borderRadius: "var(--canvas-radius)",
+            }}
+          />
+        )}
+      </motion.div>
 
-      {/* Logo — slides down on load */}
+      {/* Logo — slides down once the canvas has finished fading in */}
       <motion.div
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
+        transition={{ duration: 0.7, ease: EASE, delay: CANVAS_FADE_DURATION }}
         style={{
           position: "absolute",
           top: 32,
@@ -132,7 +142,7 @@ export default function App() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: EASE, delay: 0.15 }}
+          transition={{ duration: 0.7, ease: EASE, delay: CANVAS_FADE_DURATION + 0.05 }}
           style={{
             position: "absolute",
             bottom: 32,
