@@ -17,7 +17,7 @@ type Mode = "landing" | "gallery" | "save" | "info";
 
 const CANVAS_LAYOUT_ID = "canvas";
 const EASE = [0.22, 1, 0.36, 1] as const;
-const CANVAS_FADE_DURATION = 1.5;
+const CANVAS_FADE_DURATION = 1;
 
 const isDev = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("dev");
 
@@ -142,7 +142,7 @@ export default function App() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: EASE, delay: CANVAS_FADE_DURATION + 0.05 }}
+          transition={{ duration: 0.7, ease: EASE, delay: CANVAS_FADE_DURATION }}
           style={{
             position: "absolute",
             bottom: 32,
