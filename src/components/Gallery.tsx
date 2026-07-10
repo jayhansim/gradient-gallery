@@ -4,23 +4,26 @@ import GradientCanvas from "./GradientCanvas";
 
 interface GalleryProps {
   gradients: GradientSpec[];
-  activeIndex: number;
   onSelect: (index: number) => void;
   onClose: () => void;
-  /** shared layout id for the active card (morphs to/from landing canvas) */
-  layoutId: string;
 }
 
 const pad = (n: number) => String(n + 1).padStart(2, "0");
 
+const TRANSITION = { duration: 0.5, ease: "easeInOut" } as const;
+
 /**
- * Horizontally-scrolling row of gradient cards. The active card carries the
- * shared layoutId so it morphs from the big landing canvas; the rest fade/rise
- * in. Clicking a card selects it and returns to the landing view.
+ * Horizontally-scrolling row of gradient cards ("All"). The whole panel
+ * fades in and slides up on entry, and fades out and slides down on exit
+ * (closing, or picking a gradient) — see LandingCanvas for the fade that
+ * follows once this panel has fully exited.
  */
-export default function Gallery({ gradients, activeIndex, onSelect, onClose, layoutId }: GalleryProps) {
+export default function Gallery({ gradients, onSelect, onClose }: GalleryProps) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0, transition: TRANSITION }}
+      exit={{ opacity: 0, y: 40, transition: TRANSITION }}
       style={{
         position: "absolute",
         inset: 0,
@@ -50,65 +53,39 @@ export default function Gallery({ gradients, activeIndex, onSelect, onClose, lay
             margin: "0 auto",
           }}
         >
-          {gradients.map((spec, i) => {
-            const isActive = i === activeIndex;
-            const card = (
-              <button
-                onClick={() => onSelect(i)}
-                aria-label={`Gradient ${pad(i)}`}
+          {gradients.map((spec, i) => (
+            <button
+              key={spec.id}
+              onClick={() => onSelect(i)}
+              aria-label={`Gradient ${pad(i)}`}
+              style={{
+                flex: "0 0 auto",
+                display: "block",
+                cursor: "pointer",
+              }}
+            >
+              <GradientCanvas
+                spec={spec}
+                blurScale={0.3}
                 style={{
-                  flex: "0 0 auto",
-                  display: "block",
-                  cursor: "pointer",
+                  height: "min(64vh, 560px)",
+                  aspectRatio: "1 / 1.9",
+                  borderRadius: 8,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <GradientCanvas
-                  spec={spec}
-                  blurScale={0.3}
-                  layoutId={isActive ? layoutId : undefined}
-                  style={{
-                    height: "min(64vh, 560px)",
-                    aspectRatio: "1 / 1.9",
-                    borderRadius: 8,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <span className="card-number">{pad(i)}</span>
-                </GradientCanvas>
-              </button>
-            );
-
-            if (isActive) {
-              // active card position is driven by the shared layout morph
-              return <div key={spec.id}>{card}</div>;
-            }
-            return (
-              <motion.div
-                key={spec.id}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 24 }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
-              >
-                {card}
-              </motion.div>
-            );
-          })}
+                <span className="card-number">{pad(i)}</span>
+              </GradientCanvas>
+            </button>
+          ))}
         </div>
       </div>
 
-      <motion.button
-        className="menu-item"
-        onClick={onClose}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3, delay: 0.1 }}
-      >
+      <button className="menu-item" onClick={onClose}>
         Close
-      </motion.button>
-    </div>
+      </button>
+    </motion.div>
   );
 }

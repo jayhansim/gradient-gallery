@@ -15,7 +15,6 @@ import DevPanel from "./components/DevPanel";
 
 type Mode = "landing" | "gallery" | "save" | "info";
 
-const CANVAS_LAYOUT_ID = "canvas";
 const EASE = [0.22, 1, 0.36, 1] as const;
 const CANVAS_FADE_DURATION = 1;
 
@@ -38,9 +37,8 @@ export default function App() {
   const goNext = useCallback(() => setActiveIndex((i) => (i + 1) % total), [total]);
 
   const selectFromGallery = useCallback((i: number) => {
-    // set active first so that card carries the shared layoutId, then morph back
     setActiveIndex(i);
-    requestAnimationFrame(() => setMode("landing"));
+    setMode("landing");
   }, []);
 
   // Keyboard shortcuts: arrows navigate, a/s/i open gallery/save/info, esc closes
@@ -85,28 +83,24 @@ export default function App() {
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", background: "var(--white)" }}>
-      {/* Canvas: big landing canvas, or the gallery it morphs into.
-          Wrapper fades in once on page load; it never remounts across mode
-          switches, so the gallery/landing morph beneath it is unaffected.
-          Logo and bottom strip are timed to start once this fade completes. */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: CANVAS_FADE_DURATION, ease: "easeOut" }}
-      >
+      {/* Canvas: big landing canvas, or the "All" gallery. Only one is ever
+          mounted — AnimatePresence sequences them so the outgoing view fully
+          exits before the incoming one enters (see each component's own
+          initial/animate/exit for the actual fade/slide). */}
+      <AnimatePresence mode="wait">
         {mode === "gallery" ? (
           <Gallery
+            key="gallery"
             gradients={specs}
-            activeIndex={activeIndex}
             onSelect={selectFromGallery}
             onClose={() => setMode("landing")}
-            layoutId={CANVAS_LAYOUT_ID}
           />
         ) : (
           <LandingCanvas
+            key="landing"
             spec={activeSpec}
             activeKey={activeSpec.id}
-            layoutId={CANVAS_LAYOUT_ID}
+            fadeDuration={CANVAS_FADE_DURATION}
             style={{
               top: 16,
               left: 16,
@@ -116,7 +110,7 @@ export default function App() {
             }}
           />
         )}
-      </motion.div>
+      </AnimatePresence>
 
       {/* Logo — slides down once the canvas has finished fading in */}
       <motion.div
