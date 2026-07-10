@@ -1,16 +1,4 @@
-import type { GradientSpec, NoisePreset } from "../types";
-
-/**
- * Default grain preset, tuned close to the Figma noise layers
- * (multiply @ 40% + soft-light @ 40%). We collapse both into one
- * procedural feTurbulence layer. Per-gradient overrides go on the spec.
- */
-const DEFAULT_NOISE: NoisePreset = {
-  baseFrequency: 0.9,
-  numOctaves: 2,
-  opacity: 0.4,
-  blendMode: "soft-light",
-};
+import type { GradientSpec } from "../types";
 
 /**
  * The curated gradients — the single source of truth for both on-screen
