@@ -1,0 +1,34 @@
+:root {
+  /* Brand */
+  --primary: #14151a;
+  --secondary: #6c6f7f;
+  --tertiary: #9c9faf;
+
+  /* Neutrals */
+  --white: #ffffff;
+  --neutral-50: #fafafa;
+  --neutral-100: #f3f3f6;
+  --neutral-200: #e2e3e9;
+  --neutral-300: #d2d3da;
+  --neutral-400: #9c9faf;
+  --neutral-500: #6c6f7f;
+  --neutral-600: #4d5060;
+  --neutral-700: #3b3e4a;
+  --neutral-800: #25262c;
+  --neutral-900: #14151a;
+
+  /* Secondary button */
+  --btn-bg: #f3f3f6;
+  --btn-bg-hover: #e2e3e9;
+  --btn-text: #14151a;
+
+  /* Type */
+  --font-serif: "Crimson Pro", Georgia, "Times New Roman", serif;
+
+  /* Layout */
+  --page-pad: 16px;
+  --canvas-radius: 8px;
+
+  /* Motion */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}

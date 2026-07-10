@@ -1,0 +1,87 @@
+/* Text menu buttons (Prev / Next / All / Save / Info, and Save submenu) */
+.menu-item {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.18px;
+  line-height: 1;
+  color: var(--primary);
+  white-space: nowrap;
+  transition: opacity 0.2s var(--ease-soft);
+}
+.menu-item:hover {
+  opacity: 0.55;
+}
+.menu-item:disabled {
+  color: var(--tertiary);
+  cursor: default;
+  opacity: 1;
+}
+
+.menu-row {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 440px) {
+  .menu-row {
+    gap: 16px;
+  }
+}
+
+/* Counter + divider */
+.counter {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.18px;
+  line-height: 1;
+  color: var(--tertiary);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.divider {
+  width: 120px;
+  height: 1px;
+  background: var(--neutral-100);
+}
+
+/* Card number label */
+.card-number {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.18px;
+  color: #ffffff;
+  mix-blend-mode: difference;
+  user-select: none;
+}
+
+/* Gallery horizontal scroller — hide scrollbar */
+.gallery-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.gallery-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Secondary pill button (Info modal Close) */
+.btn-secondary {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.18px;
+  color: var(--btn-text);
+  background: var(--btn-bg);
+  border-radius: 999px;
+  padding: 14px 24px;
+  width: 100%;
+  transition: background 0.2s var(--ease-soft);
+}
+.btn-secondary:hover {
+  background: var(--btn-bg-hover);
+}
