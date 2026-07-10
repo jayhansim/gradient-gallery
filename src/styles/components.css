@@ -49,12 +49,12 @@
 
 /* Card number label */
 .card-number {
+  position: relative;
   font-family: var(--font-serif);
   font-weight: 500;
   font-size: 18px;
   letter-spacing: -0.18px;
   color: #ffffff;
-  mix-blend-mode: difference;
   user-select: none;
 }
 
