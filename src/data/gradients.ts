@@ -23,7 +23,7 @@ export const GRADIENTS: GradientSpec[] = [
     name: "Dawn Haze",
     angle: 180,
     blur: 15,
-    noise: DEFAULT_NOISE,
+    noise: { baseFrequency: 0.9, numOctaves: 2, opacity: 0.5, blendMode: "overlay" },
     stops: [
       { color: "#8ea3d0", pos: 0 },
       { color: "#abbadb", pos: 36 },
@@ -40,7 +40,7 @@ export const GRADIENTS: GradientSpec[] = [
     name: "Deep Blue Rise",
     angle: 180,
     blur: 50,
-    noise: DEFAULT_NOISE,
+    noise: { baseFrequency: 0.7, numOctaves: 2, opacity: 0.6, blendMode: "overlay" },
     stops: [
       { color: "#000813", pos: 0 },
       { color: "#000b1f", pos: 10 },
@@ -57,8 +57,8 @@ export const GRADIENTS: GradientSpec[] = [
     id: "g03",
     name: "Sky to Dusk",
     angle: 180,
-    blur: 50,
-    noise: DEFAULT_NOISE,
+    blur: 20,
+    noise: { baseFrequency: 0.8, numOctaves: 2, opacity: 0.4, blendMode: "overlay" },
     stops: [
       { color: "#6da5e2", pos: 0 },
       { color: "#85acd6", pos: 14 },
@@ -75,8 +75,8 @@ export const GRADIENTS: GradientSpec[] = [
     id: "g04",
     name: "Navy Sunset",
     angle: 180,
-    blur: 50,
-    noise: DEFAULT_NOISE,
+    blur: 20,
+    noise: { baseFrequency: 0.8, numOctaves: 2, opacity: 0.4, blendMode: "overlay" },
     stops: [
       { color: "#092046", pos: 0 },
       { color: "#2e487b", pos: 19 },
@@ -92,8 +92,8 @@ export const GRADIENTS: GradientSpec[] = [
     id: "g05",
     name: "Ember Night",
     angle: 180,
-    blur: 50,
-    noise: DEFAULT_NOISE,
+    blur: 20,
+    noise: { baseFrequency: 0.8, numOctaves: 2, opacity: 0.4, blendMode: "overlay" },
     stops: [
       { color: "#050e18", pos: 0 },
       { color: "#081c33", pos: 30 },

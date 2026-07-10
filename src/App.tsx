@@ -55,6 +55,9 @@ export default function App() {
   const patchActive = (patch: Partial<GradientSpec>) =>
     setSpecs((prev) => prev.map((s, i) => (i === activeIndex ? { ...s, ...patch } : s)));
 
+  const resetActive = () =>
+    setSpecs((prev) => prev.map((s, i) => (i === activeIndex ? GRADIENTS[i] : s)));
+
   return (
     <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", background: "var(--white)" }}>
       {/* Canvas: big landing canvas, or the gallery it morphs into */}
@@ -153,7 +156,15 @@ export default function App() {
         {mode === "info" && <InfoModal sheet={isMobile} onClose={() => setMode("landing")} />}
       </AnimatePresence>
 
-      {isDev && <DevPanel spec={activeSpec} onChange={patchActive} />}
+      {isDev && (
+        <DevPanel
+          specs={specs}
+          activeIndex={activeIndex}
+          onSelectIndex={setActiveIndex}
+          onChange={patchActive}
+          onReset={resetActive}
+        />
+      )}
     </div>
   );
 }

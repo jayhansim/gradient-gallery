@@ -1,9 +1,12 @@
-import type { CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import type { BlendMode, GradientSpec } from "../types";
 
 interface DevPanelProps {
-  spec: GradientSpec;
+  specs: GradientSpec[];
+  activeIndex: number;
+  onSelectIndex: (i: number) => void;
   onChange: (patch: Partial<GradientSpec>) => void;
+  onReset: () => void;
 }
 
 const BLENDS: BlendMode[] = ["multiply", "soft-light", "overlay", "screen", "normal"];
@@ -12,12 +15,20 @@ const row: CSSProperties = { display: "flex", alignItems: "center", justifyConte
 const label: CSSProperties = { fontFamily: "system-ui, sans-serif", fontSize: 11, color: "#cfd2dd" };
 
 /**
- * Dev-only tuning panel (gated behind ?dev). Adjusts the active gradient's blur
- * and grain live; copy the printed values back into data/gradients.ts.
+ * Dev-only tuning panel (gated behind ?dev). Adjusts a gradient's blur and
+ * grain live; copy the printed values back into data/gradients.ts to persist.
  */
-export default function DevPanel({ spec, onChange }: DevPanelProps) {
+export default function DevPanel({ specs, activeIndex, onSelectIndex, onChange, onReset }: DevPanelProps) {
+  const spec = specs[activeIndex];
   const n = spec.noise;
   const setNoise = (patch: Partial<typeof n>) => onChange({ noise: { ...n, ...patch } });
+
+  const [copied, setCopied] = useState(false);
+  const copySpec = () => {
+    navigator.clipboard.writeText(JSON.stringify(spec, null, 2));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1200);
+  };
 
   return (
     <div
@@ -37,6 +48,25 @@ export default function DevPanel({ spec, onChange }: DevPanelProps) {
     >
       <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 10 }}>
         dev · {spec.name} ({spec.id})
+      </div>
+
+      <div style={{ display: "flex", gap: 4, marginBottom: 12 }}>
+        {specs.map((s, i) => (
+          <button
+            key={s.id}
+            onClick={() => onSelectIndex(i)}
+            style={{
+              flex: 1,
+              padding: "5px 0",
+              fontSize: 11,
+              borderRadius: 6,
+              background: i === activeIndex ? "#fff" : "rgba(255,255,255,0.12)",
+              color: i === activeIndex ? "#14151a" : "#cfd2dd",
+            }}
+          >
+            {i + 1}
+          </button>
+        ))}
       </div>
 
       <div style={row}>
@@ -70,12 +100,20 @@ export default function DevPanel({ spec, onChange }: DevPanelProps) {
         </select>
       </div>
 
-      <button
-        onClick={() => console.log(JSON.stringify(spec, null, 2))}
-        style={{ marginTop: 12, width: "100%", padding: "6px 0", fontSize: 11, background: "#fff", color: "#14151a", borderRadius: 6 }}
-      >
-        log spec to console
-      </button>
+      <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+        <button
+          onClick={onReset}
+          style={{ flex: 1, padding: "6px 0", fontSize: 11, background: "rgba(255,255,255,0.12)", color: "#fff", borderRadius: 6 }}
+        >
+          reset to default
+        </button>
+        <button
+          onClick={copySpec}
+          style={{ flex: 1, padding: "6px 0", fontSize: 11, background: "#fff", color: "#14151a", borderRadius: 6 }}
+        >
+          {copied ? "copied!" : "copy spec"}
+        </button>
+      </div>
     </div>
   );
 }
