@@ -136,7 +136,7 @@ export default function App() {
                 onInfo={() => setMode("info")}
               />
             </motion.div>
-            <div style={{ position: "absolute" }}>
+            <div style={{ position: "absolute", pointerEvents: mode === "save" ? "auto" : "none" }}>
               <SaveMenu
                 active={mode === "save"}
                 onDesktop={() => exportGradient(activeSpec, SIZE_4K)}

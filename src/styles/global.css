@@ -13,15 +13,20 @@
   margin: 0;
 }
 
-html,
-body,
-#root {
+html {
   height: 100%;
+  /* No horizontal scrollbar ever. Allow vertical scroll ONLY when the viewport
+     is shorter than the 750px min-height floor, so the bottom menu never gets
+     clipped off-screen (it otherwise sits below the fold and is unclickable). */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-html,
 body {
-  overflow: hidden; /* never invoke scrollbars */
+  /* Grow with #root (which has a 750px floor) rather than being locked to the
+     viewport, so html can scroll to reveal content below a short fold. */
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
